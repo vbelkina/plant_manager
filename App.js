@@ -6,6 +6,7 @@ import { StyleSheet, Text, View, Button, Image} from 'react-native';
 
 import Plants from './components/Plants';
 import About from './components/About';
+import PlantsSeen from './components/Plant1';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,34 +23,41 @@ const MyStack = () => {
 
         <Stack.Screen name="About" component={About} />
         <Stack.Screen name="Plants" component={Plants} />
-
+        <Stack.Screen name="PlantsSeen" component={PlantsSeen} />
+      
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-
 const HomeScreen = ({ navigation }) => {
   return (
-    <View style = {{backgroundColor: 'lavender', flex:1}}>
+    <View style = {{backgroundColor: '#c7d4c7', flex:1}}>
       <View style={{ flexDirection: 'row',
                      margin:"25px",
-                     border:"solid black",
                      padding:'10px',
                      justifyContent: 'space-around', }}>
         <Button
-          title="About"
-          color='green'
+          title="About Me"
+          color='#b8b8c1'
           onPress={() =>
             navigation.navigate('About')
           }
         />  
 
         <Button
-          title="Plants"
-          color='green'
+          title="My Plants"
+          color='#b8b8c1'
           onPress={() =>
             navigation.navigate('Plants')
+          }
+        />
+
+        <Button
+          title="Plants I've Seen"
+          color='#b8b8c1'
+          onPress={() =>
+            navigation.navigate('PlantsSeen')
           }
         />
       </View>
@@ -98,7 +106,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     borderColor: 'black',
-    borderWidth: 1,
+    borderWidth: 0.5,
   },
 });
 

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {useState, useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Plants() {
+
   return (
-    <View style={{flex:1, backgroundColor: 'lavender'}}>
+    <View style={{flex:1, backgroundColor: '#c7d4c7'}}>
       <View style={styles.container}>
         <View style={styles.para} >
           <Text style={{fontSize:50}}>PLANT #1</Text>
@@ -89,8 +90,8 @@ const styles = StyleSheet.create({
   forImages: {
     width: 300,
     height: 300,
-    borderColor: 'black',
-    borderWidth: 1,
+    // borderColor: 'black',
+    // borderWidth: 1,
   },
   para: {
     flex: 1,

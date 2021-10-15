@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TextInput, Button, Image } from 'react-native';
 import { useState } from "react";
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 const About = (props) => {
@@ -47,7 +45,7 @@ const About = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'lavender',
+    backgroundColor: '#c7d4c7',
     alignItems: 'center',
    },
   header: {
