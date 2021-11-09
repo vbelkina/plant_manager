@@ -10,3 +10,5 @@ Developer Notes:
 React Native
 FlatList 
 PhotoPicker (?) 
+async storage
+stack navigator (?) 
