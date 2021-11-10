@@ -12,3 +12,4 @@ FlatList
 PhotoPicker (?) 
 async storage
 stack navigator (?) 
+react-native-image-slider
