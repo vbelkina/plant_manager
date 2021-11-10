@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 function Plants() {
 
   return (
-    <View style={{flex:1, backgroundColor: '#c7d4c7'}}>
+    <View style={{flex:1, backgroundColor: '#efeff1'}}>
       <View style={styles.container}>
         <View style={styles.para} >
           <Text style={{fontSize:50}}>PLANT #1</Text>

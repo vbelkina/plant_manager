@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
   forImages: {
     width: 300,
     height: 300,
-    borderColor: 'black',
-    borderWidth: 1,
+    // borderColor: 'black',
+    // borderWidth: 1,
     padding: 10,
   },
   textinput:{
-    borderWidth: 1,
-    borderColor: 'black',
+    // borderWidth: 1,
+    // borderColor: 'black',
     padding: 5,
     textAlign: 'center',
   }

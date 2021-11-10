@@ -1,39 +1,81 @@
 import React from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Image, TextInput, Button, Platform } from 'react-native';
-import plantsSeen from '../assets/plantsSeen';
 import { useState, useEffect }  from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
-import * as Location from 'expo-location';
+//import * as Location from 'expo-location';
 
 
-const ListDemoScreen = () => {
+const ListDemoScreen = props => {
   const [name,setName] = useState("")
   const [location,setLocation] = useState(null)
   const [image, setImage] = useState(null)
   const [plantLog,setPlantLog]= useState([])
-  const [notes, setNotes] = useState("");
-  // const [errorMsg, setErrorMsg] = useState(null);
-  // const [locationText, setLocationText] = useState("");
+  const [notes, setNotes] = useState("")
+  const [isEditing, setEditing] = useState(false)
 
   const DATA = plantLog.map((x) => {
     x.id = x.href
     return(x)
   })
 
-  const Item = ({ name, location, image, notes}) => (
-        <View style={styles.item}>
+  const Item = ({ name, location, image, notes, key}) => (
+      <View style={styles.item}>
          {image && <Image source={{ uri: image }} style={styles.forImages} />}
         <View style={{paddingLeft:20, paddingHorizontal:10, flexDirection:'row'}}>
-          <Text style={styles.title}><i style={{fontSize:18}}>Plant</i><br/>{name}<br/>
-          <i style={{fontSize:18}}>Location:</i> <br/>{location}</Text>
+          <Text style={styles.title}><i style={{fontSize:18}}>Plant</i><br/>{isEditing?<TextInput 
+                                                                            style={styles.textInput}
+                                                                            placeholder = {name}
+                                                                            onChangeText={newtext => {
+                                                                                    setName(newtext);
+                                                                                  }}
+                                                                              value = {name}
+                                                                            />:name}<br/>
+
+
+          <i style={{fontSize:18}}>Location:</i> <br/>{isEditing?<TextInput 
+                                                                    style={styles.textInput} 
+                                                                    placeholder = {location}
+                                                                    onChangeText={newtext => {
+                                                                            setLocation(newtext);
+                                                                          }}
+                                                                      value = {location}
+                                                                    />:location}</Text>
   
-          <View style={{paddingLeft:30, width:500}}>
+          <View style={{paddingLeft:30, width:600}}>
           <Text><i>Notes:</i></Text>
-          <Text>{notes}</Text>
+          <Text>{isEditing?<TextInput 
+                            style={styles.textInput} 
+                            placeholder = {notes}
+                            multiline="true"
+                            style={{width:600, height:100}} 
+                            onChangeText={newtext => {
+                                    setNotes(newtext);
+                                  }}
+                              value = {notes}
+                            />:notes}</Text>
+          </View>
+
+          <View style={{flexDirection:'column', width:320, alignItems:'flex-end'}}>
+            <Button
+                alignSelf='right'
+                title={"Edit"}
+                color="#b8b8c1"
+                onPress = {() => {
+                  setEditing(!isEditing)
+                }}
+
+            />
+            <Button
+                title={"Delete"}
+                color="#d06770"
+                onPress = {() => {
+                  
+                }}
+            />
           </View>
         </View>
-        </View>
+      </View>
   );
 
 //for async data storage
@@ -87,6 +129,7 @@ const ListDemoScreen = () => {
   const renderItem = ({ item }) => (
     <View>
       <Item
+          key = {item.key}
           name={item.name}
           location={item.location}
           image={item.image}
@@ -170,7 +213,7 @@ const clearAll = async () => {
       <FlatList
         data={DATA}
         renderItem={renderItem}
-        keyExtractor={item => item.href}
+        keyExtractor={item => item.key}
       />
       </View>
       <View style = {{flex: 1, backgroundColor: '#a9adb7'}}>
@@ -197,7 +240,7 @@ const clearAll = async () => {
             value = {location}
           />
           <TextInput 
-          style={{borderColor:'black', fontSize:20, borderWidth: 1, height:100}} 
+          style={{fontSize:20, height:100}} 
           placeholder = "notes"
           multiline="true"
           onChangeText={text => {
@@ -206,13 +249,12 @@ const clearAll = async () => {
             value = {notes}
           />
 
-        <Button title="Pick an image from camera roll" onPress={pickImage} color='#d4d4d9' />
-
+        <Button title="Pick an image from camera roll" onPress={pickImage} color='#c6c6cd' />
 
         </View>
         <Button
                title={"Record"}
-               color="#c6c6cd"
+               color="#b8b8c1"
                onPress = {() => {
                  const newPlantLog =
                    plantLog.concat(
@@ -232,7 +274,7 @@ const clearAll = async () => {
                />
         <Button
                 title={"Clear"}
-                color="#b8b8c1"
+                color="#d06770"
                 onPress = {() => {
                   clearAll()
                   setPlantLog([])
@@ -271,14 +313,14 @@ const styles = StyleSheet.create({
   forImages: {
     width: 125,
     height: 125,
-    borderColor: 'black',
-    borderWidth: 1,
+    // borderColor: 'black',
+    // borderWidth: 1,
     alignSelf:'center'
   },
   textInput:{
-    borderColor:'black', 
+    // borderColor:'black', 
     fontSize:30, 
-    borderWidth: 1
+    // borderWidth: 1
   }
 });
 
