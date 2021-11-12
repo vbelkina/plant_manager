@@ -18,6 +18,8 @@ able to enter a common name and using the USDA Plant API that I localized for te
 Eventually will figure out accessing the API from the site...<br />
 ![image](https://user-images.githubusercontent.com/72238100/141417453-fb853fa9-c87b-4e73-bdc5-c0abf39e0ca8.png)
 
+Local API used with data from USDA:<br/>
+![image](https://user-images.githubusercontent.com/72238100/141417581-6c8daa7f-148d-4ab4-bb78-badfc793e495.png)
 
 
 
