@@ -16,6 +16,8 @@ Edit and delete function are in the making<br/>
 <i>the Plant Search page:</i> <br />
 able to enter a common name and using the USDA Plant API that I localized for testing, can find all plants with the common name inside it<br />
 Eventually will figure out accessing the API from the site...<br />
+![image](https://user-images.githubusercontent.com/72238100/141417453-fb853fa9-c87b-4e73-bdc5-c0abf39e0ca8.png)
+
 
 
 
