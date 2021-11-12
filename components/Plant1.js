@@ -3,8 +3,6 @@ import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar, Image, TextI
 import { useState, useEffect }  from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
-//import * as Location from 'expo-location';
-
 
 const ListDemoScreen = props => {
   const [name,setName] = useState("")
@@ -12,68 +10,48 @@ const ListDemoScreen = props => {
   const [image, setImage] = useState(null)
   const [plantLog,setPlantLog]= useState([])
   const [notes, setNotes] = useState("")
-  const [isEditing, setEditing] = useState(false)
-
+  const [time, setTime] = useState("")
+  const [selectedId, setSelectedId] = useState(null);
+  
   const DATA = plantLog.map((x) => {
-    x.id = x.href
+    x.id = Date.parse(x.time)
+   // x.id = x.href
     return(x)
   })
 
-  const Item = ({ name, location, image, notes, key}) => (
+  const Item = ({ name, location, image, notes, id, selectedId, onPress}) => (
+    
       <View style={styles.item}>
          {image && <Image source={{ uri: image }} style={styles.forImages} />}
         <View style={{paddingLeft:20, paddingHorizontal:10, flexDirection:'row'}}>
-          <Text style={styles.title}><i style={{fontSize:18}}>Plant</i><br/>{isEditing?<TextInput 
-                                                                            style={styles.textInput}
-                                                                            placeholder = {name}
-                                                                            onChangeText={newtext => {
-                                                                                    setName(newtext);
-                                                                                  }}
-                                                                              value = {name}
-                                                                            />:name}<br/>
+          <Text style={styles.title}><Text style={{fontSize:18, fontStyle: 'italic'}}>Plant</Text>{"\n"}{name}{"\n"}
 
-
-          <i style={{fontSize:18}}>Location:</i> <br/>{isEditing?<TextInput 
-                                                                    style={styles.textInput} 
-                                                                    placeholder = {location}
-                                                                    onChangeText={newtext => {
-                                                                            setLocation(newtext);
-                                                                          }}
-                                                                      value = {location}
-                                                                    />:location}</Text>
+          <Text style={{fontSize:18, fontStyle: 'italic'}}>Location:</Text> {"\n"}{location}</Text>
   
           <View style={{paddingLeft:30, width:600}}>
-          <Text><i>Notes:</i></Text>
-          <Text>{isEditing?<TextInput 
-                            style={styles.textInput} 
-                            placeholder = {notes}
-                            multiline="true"
-                            style={{width:600, height:100}} 
-                            onChangeText={newtext => {
-                                    setNotes(newtext);
-                                  }}
-                              value = {notes}
-                            />:notes}</Text>
+          <Text style={{fontStyle: 'italic'}}>Notes:</Text>
+          <Text>{notes}</Text>
           </View>
 
-          <View style={{flexDirection:'column', width:320, alignItems:'flex-end'}}>
+          {/* <View style={{flexDirection:'column', width:100, alignItems:'flex-end'}}>
             <Button
                 alignSelf='right'
                 title={"Edit"}
                 color="#b8b8c1"
                 onPress = {() => {
-                  setEditing(!isEditing)
+                  onPress
+                  {console.log('edit click', id, 'selectedId', selectedId)}
                 }}
-
             />
             <Button
                 title={"Delete"}
                 color="#d06770"
                 onPress = {() => {
-                  
+                  onPress
+                  {console.log('delete id', id, 'selectedId', selectedId)}
                 }}
             />
-          </View>
+          </View> */}
         </View>
       </View>
   );
@@ -94,22 +72,6 @@ const ListDemoScreen = props => {
     })();
   }, []);
 
-  //for location
-  // useEffect(() => {
-  //   (async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== 'granted') {
-  //       setErrorMsg('Permission to access location was denied');
-  //       return;
-  //     }
-
-  //     let location = await Location.getCurrentPositionAsync({});
-  //     setLocation(location);
-  //   })();
-  // }, []);
-
-  
-
   //image picker
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -129,37 +91,16 @@ const ListDemoScreen = props => {
   const renderItem = ({ item }) => (
     <View>
       <Item
-          key = {item.key}
+          id = {item.id}
           name={item.name}
           location={item.location}
           image={item.image}
           notes={item.notes}
+          time={item.time}
+          onPress={() => setSelectedId(item.id)}
           />
     </View>
   );
-
-  let debug=false
-  const debugView =
-    (<View>
-      <Text style={styles.headerText}>
-        DEBUGGING INFO
-      </Text>
-      <Text>
-         name is ({name})
-      </Text>
-      <Text>
-         location is ({location})
-      </Text>
-      <Text>
-         notes is ({notes})
-      </Text>
-      {/* <Text>
-         image is ({image})
-      </Text> */}
-      <Text>
-         plantLog is {JSON.stringify(plantLog)}
-      </Text>
-    </View>);
 
 //store data
 const storeData = async (value) => {
@@ -188,6 +129,8 @@ const getData = async () => {
         setLocation(null)
         setImage(null)
         setNotes("")
+        setTime("")
+        setSelectedId(null)
       }
     } catch(e) {
       console.dir(e)
@@ -213,7 +156,8 @@ const clearAll = async () => {
       <FlatList
         data={DATA}
         renderItem={renderItem}
-        keyExtractor={item => item.key}
+        keyExtractor={item => item.id}
+        extraData={selectedId}
       />
       </View>
       <View style = {{flex: 1, backgroundColor: '#a9adb7'}}>
@@ -242,7 +186,7 @@ const clearAll = async () => {
           <TextInput 
           style={{fontSize:20, height:100}} 
           placeholder = "notes"
-          multiline="true"
+          multiline = {true}
           onChangeText={text => {
                    setNotes(text);
                  }}
@@ -270,6 +214,7 @@ const clearAll = async () => {
                  setLocation("")
                  setImage(null)
                  setNotes("")
+                 setTime("")
                }}
                />
         <Button
@@ -280,8 +225,6 @@ const clearAll = async () => {
                   setPlantLog([])
                 }}
                 />
-
-    {debug?debugView: <Text></Text>}
       </View>
     </SafeAreaView>
   );
@@ -318,9 +261,7 @@ const styles = StyleSheet.create({
     alignSelf:'center'
   },
   textInput:{
-    // borderColor:'black', 
     fontSize:30, 
-    // borderWidth: 1
   }
 });
 
