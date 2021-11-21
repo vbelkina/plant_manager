@@ -10,8 +10,8 @@ const ListDemoScreen = props => {
   const [image, setImage] = useState(null)
   const [plantLog,setPlantLog]= useState([])
   const [notes, setNotes] = useState("")
-  const [time, setTime] = useState("")
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState();
+  const [id, setId] = useState();
   
   const DATA = plantLog.map((x) => {
     x.id = Date.parse(x.time)
@@ -19,7 +19,7 @@ const ListDemoScreen = props => {
     return(x)
   })
 
-  const Item = ({ name, location, image, notes, id, selectedId, onPress}) => (
+  const Item = ({ name, location, image, notes, id, onPress}) => (
     
       <View style={styles.item}>
          {image && <Image source={{ uri: image }} style={styles.forImages} />}
@@ -28,30 +28,34 @@ const ListDemoScreen = props => {
 
           <Text style={{fontSize:18, fontStyle: 'italic'}}>Location:</Text> {"\n"}{location}</Text>
   
-          <View style={{paddingLeft:30, width:600}}>
+          <View style={{paddingLeft:30, width:400}}>
           <Text style={{fontStyle: 'italic'}}>Notes:</Text>
           <Text>{notes}</Text>
           </View>
 
-          {/* <View style={{flexDirection:'column', width:100, alignItems:'flex-end'}}>
+          <View style={{flexDirection:'column', width:100, alignItems:'flex-end'}}>
             <Button
                 alignSelf='right'
                 title={"Edit"}
                 color="#b8b8c1"
                 onPress = {() => {
-                  onPress
+                  setId(id)
+                  //onPress()
                   {console.log('edit click', id, 'selectedId', selectedId)}
                 }}
             />
+            
             <Button
                 title={"Delete"}
                 color="#d06770"
                 onPress = {() => {
-                  onPress
+                  setId(id)
+                  //onPress()
+                //  setSelectedId(id)
                   {console.log('delete id', id, 'selectedId', selectedId)}
                 }}
             />
-          </View> */}
+          </View>
         </View>
       </View>
   );
@@ -71,6 +75,10 @@ const ListDemoScreen = props => {
       }
     })();
   }, []);
+
+  useEffect(()=>{
+    setSelectedId(id)
+  }, [id])
 
   //image picker
   const pickImage = async () => {
